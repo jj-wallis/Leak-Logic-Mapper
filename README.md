@@ -93,7 +93,7 @@ For OpenAI-compatible providers (e.g., OpenAI, Groq, OpenRouter).
 2. Provide your key: `OPENAI_API_KEY=your_api_key_here`
 3. Set your target model: `OPENAI_API_MODEL=gpt-4o` *(gpt-4o is suggested)*
 4. Uncomment and set your base URL:
-   `OPENAI_BASE_URL=https://api.groq.com/openai/v1`
+   `OPENAI_BASE_URL=https://api.your-provider.com/v1`
 
 **Option B: Azure OpenAI**
 
