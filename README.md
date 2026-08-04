@@ -40,8 +40,14 @@ cd Leak-Logic-Mapper
 
 It is highly recommended to run this framework within a virtual environment to prevent dependency conflicts. First, create the environment:
 
+On Linux/macOS:
 ```bash
 python3 -m venv .venv
+```
+
+On Windows:
+```cmd
+python -m venv .venv
 ```
 
 Then, activate it depending on your operating system.
