@@ -91,7 +91,7 @@ Open the newly created `.env` file. You must configure **ONE** of the following 
 For OpenAI-compatible providers (e.g., OpenAI, Groq, OpenRouter).
 1. Set the backend: `LLM_BACKEND=api`
 2. Provide your key: `OPENAI_API_KEY=your_api_key_here`
-3. Set your target model: `OPENAI_API_MODEL=gpt-4o` *(gpt-4o is suggested)*
+3. Set your target model: `OPENAI_API_MODEL=your_model_here` 
 4. Uncomment and set your base URL:
    `OPENAI_BASE_URL=https://api.your-provider.com/v1`
 
@@ -100,8 +100,9 @@ For OpenAI-compatible providers (e.g., OpenAI, Groq, OpenRouter).
 For users routing through Microsoft Azure.
 1. Set the backend: `LLM_BACKEND=api`
 2. Provide your key: `OPENAI_API_KEY=your_api_key_here`
-3. Provide your endpoint: `OPENAI_ENDPOINT=https://your-endpoint.openai.azure.com/`
-4. Ensure you are using the correct `OPENAI_API_VERSION` for your deployment.
+3. Set your target model: `OPENAI_API_MODEL=your_model_here` *(gpt-4o is suggested)*
+4. Provide your endpoint: `OPENAI_ENDPOINT=https://your-endpoint.openai.azure.com/`
+5. Ensure you are using the correct `OPENAI_API_VERSION` for your deployment.
 
 **Option C: Local Hosted Model (Ollama)**
 
