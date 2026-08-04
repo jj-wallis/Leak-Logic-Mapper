@@ -38,19 +38,21 @@ cd Leak-Logic-Mapper
 
 **2. Initialise the Virtual Environment**
 
-It is highly recommended to run this framework within a virtual environment to prevent dependency conflicts.
+It is highly recommended to run this framework within a virtual environment to prevent dependency conflicts. First, create the environment:
+
 ```bash
-# Create the virtual environment
 python3 -m venv .venv
 ```
 
+Then, activate it depending on your operating system.
+
+On Linux/macOS:
 ```bash
-# Activate the virtual environment on Linux/macOS:
 source .venv/bin/activate
 ```
 
+On Windows:
 ```cmd
-# Activate the virtual environment on Windows:
 .venv\Scripts\activate
 ```
 
