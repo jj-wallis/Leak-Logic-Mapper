@@ -102,7 +102,7 @@ For users routing through Microsoft Azure.
 2. Provide your key: `OPENAI_API_KEY=your_api_key_here`
 3. Set your target model: `OPENAI_API_MODEL=your_model_here` *(gpt-4o is suggested)*
 4. Uncomment and provide your endpoint: `OPENAI_ENDPOINT=https://your-endpoint.openai.azure.com/`
-5. Ensure you are using the correct `OPENAI_API_VERSION` for your deployment.
+5. Uncomment and ensure you are using the correct `OPENAI_API_VERSION` for your deployment.
 
 **Option C: Local Hosted Model (Ollama)**
 
