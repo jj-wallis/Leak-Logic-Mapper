@@ -1,105 +1,155 @@
 # Leak Logic Mapper
 
-Leak Logic Mapper is a deterministic Static Memory Analyser for C code. It leverages Large Language Models to perform semantic extraction, track pointer lifecycles and identify potential memory leaks.
+Leak Logic Mapper is an AI-driven, inter-procedural static analysis framework built to hunt down memory leaks in C. Traditional tools struggle with semantic context, and raw LLMs choke on large codebases. Leak Logic Mapper solves both. Instead of analysing an entire program at once, it executes a bottom-up, parallel analysis of the call graph. It evaluates functions in isolation to construct localised Memory Profiles, then passes those semantic profiles upward. By safely abstracting heap logic this way, it seamlessly tracks complex pointer lifecycles across massive execution paths—completely bypassing LLM token limits and context decay.
 
+GIF ![Leak Logic Mapper Demo](assets/demo.gif) *(Placeholder)*
+
+## Academic Context
+This framework was researched and developed as part of a final bachelors dissertation at Manchester Metropolitan University. 
+
+For a comprehensive breakdown of the methodology, architecture, and theoretical foundation, the full dissertation report is available in the `docs/` directory:
+* [Read the full Academic Report (PDF)](docs/Dissertation_Report.pdf) *(Placeholder)*
+
+---
+
+## Architecture
+
+![Architecture Diagram](assets/architecture_diagram.png) *(Placeholder)*
+
+---
 
 ## Prerequisites
-- **Python:** Version 3.8 or higher.
-- **Ollama (Optional):** installed and running in the background if you plan to execute the model locally. Ollama can be installed from https://ollama.com/download
 
+* **Python 3.8+**
+* **Git**
+* **Ollama** *(Optional: Only required if running a local language model)*
 
-## Installation and Setup
+---
 
-**Clone or download the repository, then navigate to the project directory:**
+## Installation & Setup
 
-    cd Leak_Logic_Mapper
+**1. Clone the Repository**
 
-**Create and activate a virtual environment**
+Open your terminal and clone the repository to your local machine:
+```bash
+git clone https://github.com/jj-wallis/Leak-Logic-Mapper
+cd Leak-Logic-Mapper
+```
 
-    python -m venv .venv
+**2. Initialise the Virtual Environment**
 
-On macOS/Linux:
+It is highly recommended to run this framework within a virtual environment to prevent dependency conflicts.
+```bash
+# Create the virtual environment
+python3 -m venv .venv
 
-    source .venv/bin/activate
+# Activate the virtual environment on Linux/macOS:
+source .venv/bin/activate
+```
 
-On Windows:
+```cmd
+# Activate the virtual environment on Windows:
+.venv\Scripts\activate
+```
 
-    .\.venv\Scripts\activate
+**3. Install Dependencies**
 
-**Install the required dependencies:**
+With the virtual environment active, install the required packages:
+```bash
+pip install -r requirements.txt
+```
 
-    pip install -r requirements.txt
-
+---
 
 ## Configuration
 
-This application sources its runtime configuration from a .env file. Copy the provided .env.example to .env to set your parameters.
+Leak Logic Mapper requires a `.env` file to manage backend settings and API keys. 
 
-You can choose between two backends for LLM inference: API or Local.
-By default Leak Logic Mapper is set to use the API backend.
-To verify this, open the .env file and ensure the following is set:
+**1. Generate the Configuration File**
 
-    LLM_BACKEND=api
+Run the following command to duplicate the template file. 
 
-**API Backend Setup:**
+On Linux/macOS:
+```bash
+cp .env.example .env
+```
+On Windows:
+```cmd
+copy .env.example .env
+```
 
-Leak Logic Mapper interfaces with the OpenAI API standard. As well as the AzureOpenAI platform.
-Open your .env file and set:
+**2. Choose Your Inference Engine**
 
-    OPENAI_API_KEY=your_api_key_here
+Open the newly created `.env` file. You must configure **ONE** of the following three backends. Ignore the sections for the backends you are not using.
 
-Please select a model of choice by setting:
+**Option A: Standard API (Recommended)**
 
-    OPENAI_API_MODEL=your_target_model
+For standard API providers (e.g., OpenAI).
+1. Set the backend: `LLM_BACKEND=api`
+2. Provide your key: `OPENAI_API_KEY=your_api_key_here`
+3. Set your target model: `OPENAI_API_MODEL=gpt-4o` *(gpt-4o is suggested)*
 
-*(gpt-4o is the recommended choice)* 
+**Option B: Azure OpenAI**
 
-If you are using an OpenAI-Compatible provider set:
+For users routing through Microsoft Azure.
+1. Set the backend: `LLM_BACKEND=api`
+2. Provide your key: `OPENAI_API_KEY=your_api_key_here`
+3. Provide your endpoint: `OPENAI_ENDPOINT=https://your-endpoint.openai.azure.com/`
+4. Ensure you are using the correct `OPENAI_API_VERSION` for your deployment.
 
-    OPENAI_BASE_URL=your_url_here
+**Option C: Local Hosted Model (Ollama)**
 
-If you are using Azure OpenAI set:
+To run the analysis entirely offline using local hardware.
+1. Ensure the Ollama background service is running on port 11434.
+2. Pull your model: `ollama pull <model_name>` *(Note: The model must enforce JSON formatted outputs).*
+3. Set the backend: `LLM_BACKEND=local`
+4. Set the model name: `LOCAL_MODEL=<model_name>`
 
-    OPENAI_ENDPOINT=your_endpoint_here
+**Advanced System Settings (Optional)**
 
-*Note: If you are not using Azure, ensure the OPENAI_ENDPOINT line in the .env file is commented out.*
+Depending on your hardware specifications or API rate limits, you can adjust the concurrency limits in the `.env` file:
+*   `MAX_WORKERS`: Changes the maximum number of parallel threads. (Reduce this if hitting API rate limits or GPU memory constraints).
 
-**Local Backend Setup:**
-
-To run the analysis locally without external network calls, use Ollama.
-Ensure the Ollama background service is running, then Pull your desired model:
-
-    ollama pull your_model_here
-
-Open your .env file and set:
-
-    LLM_BACKEND=local
-    LOCAL_MODEL=your_model_here
-
-
-*Note: local Models must enforce outputs in a JSON format.*
-
+---
 
 ## Usage
 
-Run the application by pointing it to a specific .c file:
+Run the application by pointing it to a specific `.c` file:
 
-    python main.py [OPTIONS] [FILEPATH]
+```bash
+python main.py [OPTIONS] [FILEPATH]
+```
 
-Run Leak Logic Mapper with the -h option to see a list of available options.
+Run Leak Logic Mapper with the `-h` option to see a list of available CLI flags.
 
 **Examples using Sample Test Cases**
 
-A suite of sample C files is included in the tests/sample_test_cases/ directory to help you verify the tool is working correctly.
+A suite of sample C files is included in the `tests/sample_test_cases/` directory to verify the tool is operating correctly. To run a baseline test:
 
-To test the tool with a sample test case run:
+```bash
+python main.py tests/sample_test_cases/01_basic_allocation_safe.c
+```
 
-    python main.py tests/sample_test_cases/01_malloc_free_safe.c
+---
 
+## Evaluation & Benchmarking 
 
-## For Your Information
+The framework is packaged with an automated evaluation harness designed to run against a curated subset of the **Juliet Test Suite (CWE-401)**. 
 
-You may want to alter the level of concurrency, when running local models, dependant on your hardware specifications, or when using a provider with low request per minute constraints. To change the number of maximum threads set:
+*(Placeholder:`scripts/evaluate_juliet.py`)*
 
+| Metric | Score |
+| :--- | :--- |
+| **True Positives (TP)** | 0 |
+| **False Positives (FP)** | 0 |
+| **False Negatives (FN)** | 0 |
+| **True Negatives (TN)** | 0 |
+| **Precision** | 0.00% |
+| **Recall** | 0.00% |
+| **F1 Score** | 0.000 |
 
-    MAX_WORKERS=...
+---
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
