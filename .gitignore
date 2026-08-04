@@ -1,0 +1,11 @@
+# Environments
+.env
+.venv/
+
+# Python Cache & Bytecode
+__pycache__/
+*.pyc
+
+# Runtime Logs
+logs/
+*.log
