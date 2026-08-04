@@ -8,7 +8,7 @@ GIF ![Leak Logic Mapper Demo](assets/demo.gif) *(Placeholder)*
 This framework was researched and developed as part of a final bachelors dissertation at Manchester Metropolitan University. 
 
 For a comprehensive breakdown of the methodology, architecture, and theoretical foundation, the full dissertation report is available in the `docs/` directory:
-> **[Read Leak Logic Mapper: Technical Report (PDF)](docs/Leak_Logic_Mapper_Technical_Report.pdf)**
+> **[Read Leak Logic Mapper: Technical Report (PDF)](https://github.com/jj-wallis/Leak-Logic-Mapper/raw/main/docs/Leak_Logic_Mapper_Technical_Report.pdf)**
 
 ---
 
