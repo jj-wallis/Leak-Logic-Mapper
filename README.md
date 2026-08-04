@@ -145,21 +145,35 @@ python main.py tests/sample_test_cases/01_basic_allocation_safe.c
 
 ---
 
-## Evaluation & Benchmarking 
+## Evaluation & Benchmarking
 
-The framework is packaged with an automated evaluation harness designed to run against a curated subset of the **Juliet Test Suite (CWE-401)**. 
+To rigorously evaluate Leak Logic Mapper's precision and recall, the framework was tested against a sanitised subset of the **Juliet Test Suite (CWE-401)**, comprising **628 source files** and **2,614 individual functions**. 
 
-*(Placeholder:`scripts/evaluate_juliet.py`)*
+*Note: The Juliet Test Suite is a public domain dataset provided by the National Institute of Standards and Technology (NIST) and the NSA Center for Assured Software.*
 
-| Metric | Score |
+### Mitigation of LLM Data Leakage
+Standard Juliet test cases contain explicit textual hints (e.g., `/* POTENTIAL FLAW */` comments or function names like `_bad()` and `good1()`). To enforce true semantic reasoning rather than text reading comprehension, `scripts/evaluate_juliet.py` passes all target code through a pre-processing sanitisation pipeline that:
+* Strips all inline and block comments.
+* Standardiaes function identifiers (anonymising synthetic vulnerabilities to `_target` and safe paths to `_variant`).
+
+### Benchmark Results
+
+| Metric | Score / Count |
 | :--- | :--- |
-| **True Positives (TP)** | 0 |
-| **False Positives (FP)** | 0 |
-| **False Negatives (FN)** | 0 |
-| **True Negatives (TN)** | 0 |
-| **Precision** | 0.00% |
-| **Recall** | 0.00% |
-| **F1 Score** | 0.000 |
+| **Evaluated Source Files** | 628 |
+| **Total Functions Analysed** | 2,614 |
+| **True Positives (TP)** | 626 |
+| **True Negatives (TN)** | 1,734 |
+| **False Positives (FP)** | 252 |
+| **False Negatives (FN)** | 2 |
+| **Precision** | **71.30%** |
+| **Recall** | **99.68%** |
+| **F1 Score** | **0.831** |
+
+**Key Finding:** The **99.68% Recall** rate demonstrates the framework's fail-secure routing logic, successfully catching virtually all explicit memory leak paths across complex call graphs.
+
+### Academic Context & Full Coverage
+For a comprehensive breakdown of the evaluation methodology, the theoretical foundation, and the exact data matrices detailing all 628 test cases covered, please refer to section 5.8: Evaluation Metrics in the dissertation report.
 
 ---
 
