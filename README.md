@@ -86,12 +86,14 @@ copy .env.example .env
 
 Open the newly created `.env` file. You must configure **ONE** of the following three backends. Ignore the sections for the backends you are not using.
 
-**Option A: Standard API (Recommended)**
+**Option A: OpenAI-Compatible API**
 
-For standard API providers (e.g., OpenAI).
+For OpenAI-compatible providers (e.g., OpenAI, Groq, OpenRouter).
 1. Set the backend: `LLM_BACKEND=api`
 2. Provide your key: `OPENAI_API_KEY=your_api_key_here`
 3. Set your target model: `OPENAI_API_MODEL=gpt-4o` *(gpt-4o is suggested)*
+4. If using an alternative provider like Groq or OpenRouter, uncomment and set your base URL:
+   `OPENAI_BASE_URL=https://api.groq.com/openai/v1`
 
 **Option B: Azure OpenAI**
 
