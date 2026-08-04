@@ -1,10 +1,15 @@
 """
 Leak Logic Mapper: Automated Juliet Evaluation Harness
-Author: Jacob Wallis | Student ID: 22513465
+Author: Jacob Wallis
 
 This script automatically iterates through a directory of Juliet CWE-401 test cases,
 bypasses the CLI to directly invoke the core analysis pipeline, evaluates the memory
 profiles against Juliet's naming conventions, and exports the metrics to a CSV file.
+
+REPRODUCIBILITY NOTICE:
+To keep this repository lightweight, the official Juliet Test Suite is not included.
+To replicate the benchmark metrics locally, download the CWE-401 C/C++ dataset from 
+the NIST SAMATE public repository and extract the files into a 'tests/juliet/' directory.
 """
 
 import os
