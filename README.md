@@ -14,7 +14,7 @@ For a comprehensive breakdown of the methodology, architecture, and theoretical 
 
 ## Architecture
 
-![Architecture Diagram](assets/architecture_diagram.png) *(Placeholder)*
+<img src="assets/architecture_diagram.png" alt="Architecture Diagram" width="800">
 
 ---
 
