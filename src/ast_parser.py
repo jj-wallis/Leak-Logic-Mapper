@@ -1,6 +1,6 @@
 """
 Leak Logic Mapper: AST Parser
-Author: Jacob Wallis | Student ID: 22513465
+Author: Jacob Wallis
 
 This module uses tree-sitter-c to extract function indentities
 and determistic entry and exit boundaries of a functon.

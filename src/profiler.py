@@ -1,6 +1,6 @@
 """
 Leak Logic Mapper: Profiler
-Author: Jacob Wallis | Student ID: 22513465
+Author: Jacob Wallis
 
 This module takes a claim made by the LLM and checks it against dertemistic
 data from the AST to validate claims. The module will return a formal tag 

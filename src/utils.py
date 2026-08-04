@@ -1,6 +1,6 @@
 """
 Leak Logic Mapper: Utils
-Author: Jacob Wallis | Student ID: 22513465
+Author: Jacob Wallis
 
 This module defines and houses utility functions used when validating LLM claims
 against AST data.

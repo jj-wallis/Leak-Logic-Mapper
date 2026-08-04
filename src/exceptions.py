@@ -1,6 +1,6 @@
 """
 Leak Logic Mapper: Exceptions
-Author: Jacob Wallis | Student ID: 22513465
+Author: Jacob Wallis
 
 This module is used to define and custom exceptions to wrap anticipated errors.
 """

@@ -1,6 +1,6 @@
 """
 Leak Logic Mapper: Api Interface
-Author: Jacob Wallis | Student ID: 22513465
+Author: Jacob Wallis
 
 This module interfaces with an API, the LLM can be specified in the .env file.
 This module establishes a connection with external providers (currently configured to 

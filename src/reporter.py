@@ -1,6 +1,6 @@
 """
 Leak Logic Mapper: Reporter
-Author: Jacob Wallis | Student ID: 22513465
+Author: Jacob Wallis
 
 Formats a final report to the user and prints it to the terminal.
 A summary of leaks detected is included aswell as individual analysis for each function.

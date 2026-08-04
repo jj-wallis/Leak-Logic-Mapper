@@ -1,6 +1,6 @@
 """
 Leak Logic Mapper: Orchestrator
-Author: Jacob Wallis | Student ID: 22513465
+Author: Jacob Wallis
 
 This module manages the execution flow the the system.
 It orders functions for analysis in order of bottom up execution,

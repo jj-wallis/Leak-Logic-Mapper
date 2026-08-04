@@ -1,6 +1,6 @@
 """
 Leak Logic Mapper: Application Entry Point
-Author: Jacob Wallis | Student ID: 22513465
+Author: Jacob Wallis
 
 Sources arguments from the command line, runs a C code snippet through
 the AST extractor, passes the data to the local LLM interface, and outputs 

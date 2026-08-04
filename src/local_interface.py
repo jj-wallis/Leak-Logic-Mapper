@@ -1,6 +1,6 @@
 """
 Leak Logic Mapper: Local Interface
-Author: Jacob Wallis | Student ID: 22513465
+Author: Jacob Wallis
 
 This module interfaces with locally hosted models (currently configure with Ollama),
 providing an offline source of inference generation for the 
