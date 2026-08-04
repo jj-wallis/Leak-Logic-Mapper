@@ -42,7 +42,9 @@ It is highly recommended to run this framework within a virtual environment to p
 ```bash
 # Create the virtual environment
 python3 -m venv .venv
+```
 
+```bash
 # Activate the virtual environment on Linux/macOS:
 source .venv/bin/activate
 ```
