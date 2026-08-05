@@ -5,7 +5,7 @@
 Leak Logic Mapper is an AI-driven, inter-procedural static analysis framework built to hunt down memory leaks in C. Traditional tools struggle with semantic context, and raw LLMs choke on large codebases. Leak Logic Mapper solves both. Instead of analysing an entire program at once, it executes a bottom-up, parallel analysis of the call graph. It evaluates functions in isolation to construct localised Memory Profiles, then passes those semantic profiles upward. By safely abstracting heap logic this way, it seamlessly tracks complex pointer lifecycles across massive execution paths - completely bypassing LLM token limits and context decay. To mitigate the inherent risk of AI hallucinations, a robust validation engine actively cross-references the LLM's semantic outputs against boundaries determined via abstract syntax tree parsing. If a probabilistic claim violates these strict structural constraints, it is acknowledged as a hallucination and immediately discarded. The result is a highly scalable, neuro-symbolic analyser that delivers the deep semantic reasoning of an LLM with the deterministic precision of traditional static analysis.
 
 ## Academic Context
-This framework was researched and developed as part of a final bachelors dissertation at Manchester Metropolitan University. 
+This framework was researched and developed as part of a final bachelor's dissertation at Manchester Metropolitan University. 
 
 For a comprehensive breakdown of the methodology, architecture, and theoretical foundation, the full dissertation report is available in the `docs/` directory:
 > **[Read Leak Logic Mapper: Technical Report (PDF)](https://github.com/jj-wallis/Leak-Logic-Mapper/raw/main/docs/Leak_Logic_Mapper_Technical_Report.pdf)**
@@ -27,7 +27,7 @@ To rigorously evaluate Leak Logic Mapper's precision and recall, the framework w
 ### Mitigation of LLM Data Leakage
 Standard Juliet test cases contain explicit textual hints (e.g., `/* POTENTIAL FLAW */` comments or function names like `_bad()` and `good1()`). To enforce true semantic reasoning rather than text reading comprehension, `scripts/evaluate_juliet.py` passes all target code through a pre-processing sanitisation pipeline that:
 * Strips all inline and block comments.
-* Standardiaes function identifiers (anonymising synthetic vulnerabilities to `_target` and safe paths to `_variant`).
+* Standardises function identifiers (anonymising synthetic vulnerabilities to `_target` and safe paths to `_variant`).
 
 ### Benchmark Results
 
@@ -46,7 +46,7 @@ Standard Juliet test cases contain explicit textual hints (e.g., `/* POTENTIAL F
 **Key Finding:** The **99.68% Recall** rate demonstrates the framework's fail-secure routing logic, successfully catching virtually all explicit memory leak paths across complex call graphs.
 
 ### Full Coverage
-For a comprehensive breakdown of the evaluation methodology, the theoretical foundation, and the exact data matrices detailing all 628 test cases covered, please refer to section 5.8: Evaluation Metrics in the dissertation report.
+For a comprehensive breakdown of the evaluation methodology, the theoretical foundation, and the exact data matrices detailing all 628 test cases covered, please refer to section 5.7: Evaluation Metrics in the dissertation report.
 
 ---
 
