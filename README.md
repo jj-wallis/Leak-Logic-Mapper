@@ -2,7 +2,7 @@
 
 ![Leak Logic Mapper Demo](assets/demo.gif)
 
-Leak Logic Mapper is an AI-driven, inter-procedural static analysis framework built to hunt down memory leaks in C. Traditional tools struggle with semantic context, and raw LLMs choke on large codebases. Leak Logic Mapper solves both. Instead of analysing an entire program at once, it executes a bottom-up, parallel analysis of the call graph. It evaluates functions in isolation to construct localised Memory Profiles, then passes those semantic profiles upward. By safely abstracting heap logic this way, it seamlessly tracks complex pointer lifecycles across massive execution paths - completely bypassing LLM token limits and context decay. To mitigate the inherent risk of AI hallucinations, a robust validation engine actively cross-references the LLM's semantic outputs against boundaries determined via abstract syntax tree parsing. If a probabilistic claim violates these strict structural constraints, it is acknowledged as a hallucination and immediately discarded. The result is a highly scalable, neuro-symbolic analyser that delivers the deep semantic reasoning of an LLM with the deterministic precision of traditional static analysis.
+Leak Logic Mapper is an AI-driven, inter-procedural static analysis framework built to hunt down memory leaks in C. Raw LLMs as a static analysis tool choke on large codebases. Leak Logic Mapper solves this by executing a bottom-up, parallel analysis of the call graph. It evaluates functions in isolation to construct localised Memory Profiles, then passes these upwards in a context injection for evaluation of the caller. It safely abstracts heap logic to seamlessly track complex pointer lifecycles across massive execution paths - bypassing LLM token ceilings and context decay. To mitigate hallucinations, a robust validation engine actively cross-references the LLM's semantic outputs against boundaries determined via abstract syntax tree parsing. If a probabilistic claim violates these structural constraints, it is acknowledged as a hallucination and immediately discarded. The result is a highly scalable, neuro-symbolic analyser that delivers the deep semantic reasoning of an LLM with the deterministic precision of traditional static analysis.
 
 ## Academic Context
 This framework was researched and developed as part of a final bachelor's dissertation at Manchester Metropolitan University. 
@@ -43,10 +43,10 @@ Standard Juliet test cases contain explicit textual hints (e.g., `/* POTENTIAL F
 | **Recall** | **99.68%** |
 | **F1 Score** | **0.831** |
 
-**Key Finding:** The **99.68% Recall** rate demonstrates the framework's fail-secure routing logic, successfully catching virtually all explicit memory leak paths across complex call graphs.
+**Key Finding:** The **99.68% Recall** rate demonstrates the framework's fail-secure analytical posture, successfully catching virtually all explicit memory leak paths across complex call graphs.
 
 ### Full Coverage
-For a comprehensive breakdown of the evaluation methodology, the theoretical foundation, and the exact data matrices detailing all 628 test cases covered, please refer to section 5.7: Evaluation Metrics in the dissertation report.
+For a comprehensive breakdown of the evaluation methodology, the theoretical foundation, and the exact data tables detailing all 628 test cases covered, please refer to section 5.7: Evaluation Metrics in the dissertation report.
 
 ---
 
