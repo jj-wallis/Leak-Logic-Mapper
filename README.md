@@ -2,7 +2,7 @@
 
 ![Leak Logic Mapper Demo](assets/demo.gif)
 
-Leak Logic Mapper is an AI-driven, inter-procedural static analysis framework built to hunt down memory leaks in C. Raw LLMs as a static analysis tool choke on large codebases. Leak Logic Mapper solves this by executing a bottom-up, parallel analysis of the call graph. It evaluates functions in isolation to construct localised Memory Profiles, then passes these upwards in a context injection for evaluation of the caller. It safely abstracts heap logic to seamlessly track complex pointer lifecycles across massive execution paths - bypassing LLM token ceilings and context decay. To mitigate hallucinations, a robust validation engine actively cross-references the LLM's semantic outputs against boundaries determined via abstract syntax tree parsing. If a probabilistic claim violates these structural constraints, it is acknowledged as a hallucination and immediately discarded. The result is a highly scalable, neuro-symbolic analyser that delivers the deep semantic reasoning of an LLM with the deterministic precision of traditional static analysis.
+Leak Logic Mapper is an AI-driven, inter-procedural static analysis framework built to hunt down memory leaks in C. As a static analysis tool, an LLM can choke on a large codebase. Leak Logic Mapper solves this by executing a compositional, bottom-up analysis of the call graph. It evaluates functions in isolation to construct localised Memory Profiles, then passes these upwards in a context injection for inference of the caller. It safely abstracts heap logic to seamlessly track complex pointer lifecycles across massive execution paths - bypassing LLM token ceilings and context decay. To mitigate hallucinations, a robust validation engine actively cross-references the LLM's semantic outputs against boundaries determined via abstract syntax tree parsing. If a probabilistic claim violates these structural constraints, it is acknowledged as a hallucination and immediately discarded. The result is a highly scalable, neuro-symbolic analyser that delivers the deep semantic reasoning of an LLM with the deterministic precision of traditional static analysis.
 
 ## Academic Context
 This framework was researched and developed as part of a final bachelor's dissertation at Manchester Metropolitan University. 
@@ -20,14 +20,14 @@ For a comprehensive breakdown of the methodology, architecture, and theoretical 
 
 ## Evaluation & Benchmarking
 
-To rigorously evaluate Leak Logic Mapper's precision and recall, the framework was tested against a sanitised subset of the **Juliet Test Suite (CWE-401)**, comprising **628 source files** and **2,614 individual functions**. 
+To evaluate Leak Logic Mapper, the framework was tested against a sanitised subset of the **Juliet Test Suite (CWE-401)**, comprising **628 source files** and **2,614 individual functions**. 
 
 *Note: The Juliet Test Suite is a public domain dataset provided by the National Institute of Standards and Technology (NIST) and the NSA Center for Assured Software.*
 
 ### Mitigation of LLM Data Leakage
-Standard Juliet test cases contain explicit textual hints (e.g., `/* POTENTIAL FLAW */` comments or function names like `_bad()` and `good1()`). To enforce true semantic reasoning rather than text reading comprehension, `scripts/evaluate_juliet.py` passes all target code through a pre-processing sanitisation pipeline that:
-* Strips all inline and block comments.
-* Standardises function identifiers (anonymising synthetic vulnerabilities to `_target` and safe paths to `_variant`).
+Standard Juliet test cases contain explicit textual hints (e.g., `/* POTENTIAL FLAW */` comments or function names like `_bad()` and `good1()`). To enforce true semantic reasoning, `scripts/evaluate_juliet.py` passes all target code through a pre-processing sanitisation pipeline that:
+* Strips all comments.
+* Standardises function identifiers (anonymising vulnerabilities to `_target` and safe paths to `_variant`).
 
 ### Benchmark Results
 
@@ -43,10 +43,8 @@ Standard Juliet test cases contain explicit textual hints (e.g., `/* POTENTIAL F
 | **Recall** | **99.68%** |
 | **F1 Score** | **0.831** |
 
-**Key Finding:** The **99.68% Recall** rate demonstrates the framework's fail-secure analytical posture, successfully catching virtually all explicit memory leak paths across complex call graphs.
-
 ### Full Coverage
-For a comprehensive breakdown of the evaluation methodology, the theoretical foundation, and the exact data tables detailing all 628 test cases covered, please refer to section 5.7: Evaluation Metrics in the dissertation report.
+For a comprehensive breakdown of the evaluation methodology and the exact data tables detailing all 628 test cases covered, please refer to section 5.7: Evaluation Metrics in the dissertation report.
 
 ---
 
@@ -69,8 +67,6 @@ cd Leak-Logic-Mapper
 ```
 
 **2. Initialise the Virtual Environment**
-
-It is highly recommended to run this framework within a virtual environment to prevent dependency conflicts. First, create the environment:
 
 On Linux/macOS:
 ```bash
