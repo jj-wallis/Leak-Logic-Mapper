@@ -2,10 +2,10 @@
 
 ![Leak Logic Mapper Demo](assets/demo.gif)
 
-Leak Logic Mapper is an AI-driven, inter-procedural static analysis framework built to hunt down memory leaks in C. In code analysis, an LLM will choke if it is given a whole codebase in a single prompt. Leak Logic Mapper solves this by executing compositional, bottom-up analysis of the call graph. It evaluates functions in isolation to construct Memory Profiles, then passes these upwards in a context injection for inference of the caller. It safely abstracts heap logic to seamlessly track complex pointer lifecycles across massive execution paths - bypassing LLM token ceilings and context decay. To mitigate hallucinations, a validation engine actively cross-references the LLM's semantic outputs against boundaries determined via abstract syntax tree parsing. If a probabilistic claim violates structural constraints, it is acknowledged as a hallucination and immediately discarded. The result is a highly scalable, neuro-symbolic analyser that delivers the deep semantic reasoning of an LLM with the deterministic precision of traditional static analysis.
+Leak Logic Mapper is an LLM-driven inter-procedural static analysis framework built to find memory leaks in C. In code analysis, an LLM will choke if it is tasked to analyse an entire codebase in a single prompt. Leak Logic Mapper solves this by performing compositional, bottom-up analysis of the call graph. It evaluates each function in isolation to construct a Memory Profile — a summary of which pointers that function allocates, frees, or returns — which is then supplied as context when analysing its callers. This keeps each prompt small while letting pointer ownership be tracked across deep call chains. To limit hallucinations, a validation layer parses source code into an AST and checks every identifier and function the LLM references against the symbols actually declared in the source. Claims that mention symbols which do not exist in the source code are discarded before they can propagate. The result is a highly scalable neuro-symbolic analyser.
 
 ## Academic Context
-This framework was researched and developed as part of a final bachelor's dissertation at Manchester Metropolitan University. The full dissertation report is available in the `docs/` directory:
+This framework was researched and developed as part of a final-year undergraduate dissertation at Manchester Metropolitan University. The full dissertation report is available in the `docs/` directory:
 > **[Read Leak Logic Mapper: Technical Report (PDF)](https://github.com/jj-wallis/Leak-Logic-Mapper/raw/main/docs/Leak_Logic_Mapper_Technical_Report.pdf)**
 
 ---
@@ -14,20 +14,24 @@ This framework was researched and developed as part of a final bachelor's disser
 
 <img src="assets/architecture_diagram.png" alt="Architecture Diagram" width="800">
 
+AST parsing is performed with the tree-sitter-c Python library.
+
 ---
 
 ## Evaluation & Benchmarking
 
-To evaluate Leak Logic Mapper, the framework was tested against a sanitised subset of the **Juliet Test Suite (CWE-401)**, comprising **628 source files** and **2,614 individual functions**. 
+To evaluate Leak Logic Mapper, the framework was tested against a subset of the **Juliet Test Suite (CWE-401)** comprising **628 source files** and **2,614 individual functions**. 
 
 *Note: The Juliet Test Suite is a public domain dataset provided by the National Institute of Standards and Technology (NIST) and the NSA Center for Assured Software.*
 
-### Mitigation of LLM Data Leakage
-Standard Juliet test cases contain explicit textual hints (e.g., `/* POTENTIAL FLAW */` comments or function names like `_bad()` and `good1()`). To enforce true semantic reasoning, `scripts/evaluate_juliet.py` passes all target code through a pre-processing sanitisation pipeline that:
+### Preventing Label Leakage
+Standard Juliet test cases contain explicit textual hints (e.g., `/* POTENTIAL FLAW */` comments or function names like `_bad()` and `good1()`). To prevent the model from relying on these hints, `scripts/evaluate_juliet.py` passes all target code through a pre-processing sanitisation pipeline that:
 * Strips all comments.
 * Standardises function identifiers (anonymising vulnerabilities to `_target` and safe paths to `_variant`).
 
 ### Benchmark Results
+
+All results below were obtained with gpt-4o via Azure OpenAI.
 
 | Metric | Score / Count |
 | :--- | :--- |
@@ -41,7 +45,7 @@ Standard Juliet test cases contain explicit textual hints (e.g., `/* POTENTIAL F
 | **Recall** | **99.68%** |
 | **F1 Score** | **0.831** |
 
-### Full Coverage
+### Full Breakdown
 For a comprehensive breakdown of the evaluation methodology and the exact data tables detailing all 628 test cases covered, please refer to section 5.7: Evaluation Metrics in the dissertation report.
 
 ---
@@ -64,27 +68,17 @@ git clone https://github.com/jj-wallis/Leak-Logic-Mapper
 cd Leak-Logic-Mapper
 ```
 
-**2. Initialise the Virtual Environment**
+**2. Create the Virtual Environment**
 
 On Linux/macOS:
 ```bash
 python3 -m venv .venv
-```
-
-On Windows:
-```cmd
-python -m venv .venv
-```
-
-Then, activate it depending on your operating system.
-
-On Linux/macOS:
-```bash
 source .venv/bin/activate
 ```
 
 On Windows:
 ```cmd
+python -m venv .venv
 .venv\Scripts\activate
 ```
 
@@ -140,7 +134,7 @@ For users routing through Microsoft Azure.
 
 To run the analysis entirely offline using local hardware.
 1. Ensure the Ollama background service is running on port 11434.
-2. Pull your model: `ollama pull <model_name>` *(Note: The model must enforce JSON formatted outputs).*
+2. Pull your model: `ollama pull <model_name>` *(Note: The model must support JSON responses).*
 3. Set the backend: `LLM_BACKEND=local`
 4. Set the model name: `LOCAL_MODEL=<model_name>`
 
@@ -156,7 +150,7 @@ Depending on your hardware specifications or API rate limits, you can adjust the
 Run the application by pointing it to a specific `.c` file:
 
 ```bash
-python main.py [OPTIONS] [FILEPATH]
+python main.py [OPTIONS] <FILEPATH>
 ```
 
 Run Leak Logic Mapper with the `-h` option to see a list of available CLI flags.
@@ -171,6 +165,15 @@ python main.py tests/sample_test_cases/01_basic_allocation_safe.c
 
 ---
 
+## Current Limitations
+* Inter-procedural analysis is restricted to a single `.c` file. Resolving dependencies across externally linked libraries is deferred as a preceding linker phase is not implemented.
+* The system passes raw source code to the LLM without executing a preprocessor pass, meaning macros, typedefs and directives (e.g., `#ifdef`) are unresolved.
+* The bottom-up topological sort requires a strictly acyclic call graph. Hence recursion is currently unsupported.
+
+Please refer to section 3.9: System Scope (Minimum Viable Product Constraints) in the dissertation report for further information.
+
+---
+
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
